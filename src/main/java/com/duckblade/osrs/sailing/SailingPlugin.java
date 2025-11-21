@@ -96,12 +96,17 @@ public class SailingPlugin extends Plugin
 	@Inject
 	private SeaChartOverlay seaChartOverlay;
 
+	@Inject
+	private BoatTracker boatTracker;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, GameObject> cargoHolds = new HashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.register(boatTracker);
+
 		seaChartOverlay.startUp();
 		eventBus.register(seaChartOverlay);
 		overlayManager.add(seaChartOverlay);
@@ -122,13 +127,15 @@ public class SailingPlugin extends Plugin
 
 		overlayManager.remove(luffOverlay);
 		eventBus.unregister(luffOverlay);
-		luffOverlay.shutDown();
 
 		overlayManager.remove(seaChartOverlay);
 		eventBus.unregister(seaChartOverlay);
 		seaChartOverlay.shutDown();
 
 		cargoHolds.clear();
+
+		eventBus.unregister(boatTracker);
+		boatTracker.shutDown();
 	}
 
 	@Provides

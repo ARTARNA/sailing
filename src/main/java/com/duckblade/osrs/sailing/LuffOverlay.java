@@ -1,5 +1,6 @@
 package com.duckblade.osrs.sailing;
 
+import com.duckblade.osrs.sailing.model.Boat;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -21,6 +23,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Slf4j
 @Singleton
 public class LuffOverlay extends Overlay
 {
@@ -31,49 +34,19 @@ public class LuffOverlay extends Overlay
 
 	private final Client client;
 	private final SailingConfig config;
-
-	private final Map<Integer, GameObject> sails = new HashMap<>();
+	private final BoatTracker boatTracker;
 
 	private boolean needLuff = false;
 
 	@Inject
-	public LuffOverlay(Client client, SailingConfig config)
+	public LuffOverlay(Client client, SailingConfig config, BoatTracker boatTracker)
 	{
 		this.client = client;
 		this.config = config;
+		this.boatTracker = boatTracker;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
-	}
-
-	void shutDown()
-	{
-		sails.clear();
-	}
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned e)
-	{
-		GameObject o = e.getGameObject();
-		if (SailingUtil.SAIL_IDS.contains(o.getId()))
-		{
-			sails.put(o.getWorldView().getId(), o);
-		}
-	}
-
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned e)
-	{
-		sails.remove(e.getGameObject().getWorldView().getId());
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
-	{
-		if (e.getGameState() == GameState.LOADING)
-		{
-			sails.clear();
-		}
 	}
 
 	@Subscribe
@@ -103,11 +76,12 @@ public class LuffOverlay extends Overlay
 			return null;
 		}
 
-		GameObject o = sails.get(client.getLocalPlayer().getWorldView().getId());
-		Shape hull = o != null ? o.getConvexHull() : null;
-		if (hull != null)
+		Boat boat = boatTracker.getBoat(client.getLocalPlayer().getWorldView().getId());
+		GameObject sail = boat != null ? boat.getSail() : null;
+		Shape convextHull = sail != null ? sail.getConvexHull() : null;
+		if (convextHull != null)
 		{
-			OverlayUtil.renderPolygon(g, hull, Color.green);
+			OverlayUtil.renderPolygon(g, convextHull, Color.green);
 		}
 
 		return null;

@@ -1,0 +1,40 @@
+package com.duckblade.osrs.sailing.model;
+
+import lombok.Data;
+import lombok.Getter;
+import net.runelite.api.GameObject;
+
+@Data
+public class Boat
+{
+
+	@Getter
+	private final int worldViewId;
+
+	GameObject hull;
+	GameObject sail;
+	GameObject helm;
+	GameObject salvagingHook;
+
+	// these are intentionally not cached in case the object is transformed without respawning
+	// e.g. helms have a different idle vs in-use id
+	public HullTier getHullTier()
+	{
+		return hull != null ? HullTier.fromGameObjectId(hull.getId()) : null;
+	}
+
+	public SailTier getSailTier()
+	{
+		return sail != null ? SailTier.fromGameObjectId(sail.getId()) : null;
+	}
+
+	public HelmTier getHelmTier()
+	{
+		return helm != null ? HelmTier.fromGameObjectId(helm.getId()) : null;
+	}
+
+	public SalvagingHookTier getSalvagingHookTier()
+	{
+		return salvagingHook != null ? SalvagingHookTier.fromGameObjectId(salvagingHook.getId()) : null;
+	}
+}
