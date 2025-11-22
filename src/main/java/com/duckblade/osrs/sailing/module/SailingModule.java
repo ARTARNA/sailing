@@ -1,7 +1,9 @@
 package com.duckblade.osrs.sailing.module;
 
+import com.duckblade.osrs.sailing.features.charting.SeaChartPanelOverlay;
+import com.duckblade.osrs.sailing.features.charting.SeaChartTaskIndex;
+import com.duckblade.osrs.sailing.features.charting.WeatherTaskTracker;
 import com.duckblade.osrs.sailing.features.barracudatrials.BarracudaTrialHelper;
-import com.duckblade.osrs.sailing.features.CargoHoldTracker;
 import com.duckblade.osrs.sailing.features.util.BoatTracker;
 import com.duckblade.osrs.sailing.features.LuffOverlay;
 import com.duckblade.osrs.sailing.features.RapidsOverlay;
@@ -28,20 +30,24 @@ public class SailingModule extends AbstractModule
 	@Provides
 	Set<PluginLifecycleComponent> lifecycleComponents(
 		BarracudaTrialHelper barracudaTrialHelper,
-		CargoHoldTracker cargoHoldTracker,
 		BoatTracker boatTracker,
 		LuffOverlay luffOverlay,
 		RapidsOverlay rapidsOverlay,
-		SeaChartOverlay seaChartOverlay
+		SeaChartOverlay seaChartOverlay,
+		SeaChartPanelOverlay seaChartPanelOverlay,
+		SeaChartTaskIndex seaChartTaskIndex,
+		WeatherTaskTracker weatherTaskTracker
 	)
 	{
 		return ImmutableSet.of(
 			barracudaTrialHelper,
-			cargoHoldTracker,
 			boatTracker,
 			luffOverlay,
 			rapidsOverlay,
-			seaChartOverlay
+			seaChartOverlay,
+			seaChartPanelOverlay,
+			seaChartTaskIndex,
+			weatherTaskTracker
 		);
 	}
 
