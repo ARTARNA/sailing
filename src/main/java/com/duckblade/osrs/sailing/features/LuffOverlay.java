@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.WorldViewUnloaded;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -24,8 +25,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Slf4j
 @Singleton
 public class LuffOverlay
-	extends Overlay
-	implements PluginLifecycleComponent
+		extends Overlay
+		implements PluginLifecycleComponent
 {
 
 	private static final String CHAT_LUFF_AVAILABILE = "You feel a gust of wind.";
@@ -56,6 +57,15 @@ public class LuffOverlay
 	}
 
 	@Subscribe
+	public void onWorldViewUnloaded(WorldViewUnloaded e)
+	{
+		if (!e.getWorldView().isTopLevel())
+		{
+			needLuff = false;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage e)
 	{
 		if (!SailingUtil.isSailing(client))
@@ -77,6 +87,11 @@ public class LuffOverlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
+		if (needLuff && !SailingUtil.isSailing(client))
+		{
+			needLuff = false;
+		}
+
 		if (!needLuff || !SailingUtil.isSailing(client) || !config.highlightTrimmableSails())
 		{
 			return null;
