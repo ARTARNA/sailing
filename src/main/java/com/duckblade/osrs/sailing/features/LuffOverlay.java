@@ -31,6 +31,7 @@ public class LuffOverlay
 
 	private static final String CHAT_LUFF_AVAILABILE = "You feel a gust of wind.";
 	private static final String CHAT_LUFF_PERFORMED = "You trim the sails, catching the wind for a burst of speed!";
+	private static final String CHAT_LUFF_STORED = "You trim the sails, catching the wind and storing a wind mote in your helm.";
 	private static final String CHAT_LUFF_ENDED = "The wind dies down and your sails with it.";
 
 	private final Client client;
@@ -78,7 +79,7 @@ public class LuffOverlay
 		{
 			needLuff = true;
 		}
-		else if (CHAT_LUFF_PERFORMED.equals(msg) || CHAT_LUFF_ENDED.equals(msg))
+		else if (CHAT_LUFF_PERFORMED.equals(msg) || CHAT_LUFF_STORED.equals(msg) || CHAT_LUFF_ENDED.equals(msg))
 		{
 			needLuff = false;
 		}

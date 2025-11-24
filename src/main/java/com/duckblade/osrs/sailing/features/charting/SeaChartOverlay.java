@@ -1,7 +1,6 @@
 package com.duckblade.osrs.sailing.features.charting;
 
 import com.duckblade.osrs.sailing.SailingConfig;
-import com.duckblade.osrs.sailing.features.util.SailingUtil;
 import com.duckblade.osrs.sailing.module.PluginLifecycleComponent;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -119,12 +118,13 @@ public class SeaChartOverlay
 			SeaChartTask task = tracked.getValue();
 
 			boolean completed = isTaskCompleted(task);
-			if (completed && mode == SailingConfig.ShowChartsMode.UNCHARTED)
+			if ((completed && mode == SailingConfig.ShowChartsMode.UNCHARTED) ||
+				(!completed && mode == SailingConfig.ShowChartsMode.CHARTED))
 			{
 				continue;
 			}
 
-			Color color = isTaskCompleted(task) ? Color.YELLOW : Color.GREEN;
+			Color color = completed ? colorCharted : colorUncharted;
 			OverlayUtil.renderActorOverlayImage(g, npc, taskIndex.getTaskSprite(task), color, npc.getLogicalHeight() / 2);
 		}
 
