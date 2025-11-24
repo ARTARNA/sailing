@@ -210,7 +210,7 @@ public class CargoHoldTracker
 		{
 			if (item != null)
 			{
-				trackedInv.add(item.getId(), item.getQuantity());
+				trackedInv.add(item.getId(), 1);
 			}
 		}
 
