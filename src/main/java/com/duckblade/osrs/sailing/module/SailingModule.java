@@ -57,7 +57,6 @@ public class SailingModule extends AbstractModule
 		var builder = ImmutableSet.<PluginLifecycleComponent>builder()
 			.add(barracudaTrialHelper)
 			.add(boatTracker)
-			.add(cargoHoldTracker)
 			.add(courierDestinationOverlay)
 			.add(crewmateOverheadMuter)
 			.add(currentDuckTaskTracker)
