@@ -79,5 +79,4 @@ public class SailingUtil
 			getTopLevelLocalPoint(client)
 		);
 	}
-
 }

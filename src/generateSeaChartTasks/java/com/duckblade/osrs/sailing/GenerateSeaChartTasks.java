@@ -55,6 +55,7 @@ public class GenerateSeaChartTasks
 				int y = Integer.parseInt(parts[5]);
 				int dstX = Integer.parseInt(parts[6]);
 				int dstY = Integer.parseInt(parts[7]);
+				int level = Integer.parseInt(parts[8]);
 
 				System.out.print("\t");
 				System.out.print("TASK_");
@@ -107,6 +108,8 @@ public class GenerateSeaChartTasks
 				{
 					System.out.print("null");
 				}
+				System.out.print(", ");
+				System.out.print(level);
 				System.out.println("),");
 			}
 		}
@@ -119,6 +122,7 @@ public class GenerateSeaChartTasks
 		System.out.println("\tprivate final int npcId;");
 		System.out.println("\tprivate final WorldPoint location;");
 		System.out.println("\tprivate final WorldPoint destination;");
+		System.out.println("\tprivate final int level;");
 		System.out.println();
 		System.out.println("\tpublic boolean isComplete(Client client)");
 		System.out.println("\t{");
