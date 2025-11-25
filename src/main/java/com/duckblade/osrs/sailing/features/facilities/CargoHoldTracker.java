@@ -1,4 +1,4 @@
-package com.duckblade.osrs.sailing.features;
+package com.duckblade.osrs.sailing.features.facilities;
 
 import com.duckblade.osrs.sailing.SailingConfig;
 import com.duckblade.osrs.sailing.features.util.BoatTracker;
@@ -143,8 +143,8 @@ public class CargoHoldTracker
 			return null;
 		}
 
-		int usedCapacity = usedCapacity();
 		int maxCapacity = maxCapacity();
+		int usedCapacity = usedCapacity();
 		String text = (usedCapacity != -1 ? String.valueOf(usedCapacity) : "???") + "/" + (maxCapacity != -1 ? String.valueOf(maxCapacity) : "???");
 		Color textColour = ColorUtil.colorLerp(Color.GREEN, Color.RED, (double) usedCapacity / maxCapacity);
 		Point textLocation = cargoHold.getCanvasTextLocation(g, text, 0);
@@ -319,7 +319,7 @@ public class CargoHoldTracker
 
 	private int usedCapacity()
 	{
-		return cargoHold().size();
+		return Math.min(maxCapacity(), Math.max(0, cargoHold().size()));
 	}
 
 	private int maxCapacity()
@@ -344,7 +344,7 @@ public class CargoHoldTracker
 		Multiset<Integer> ret = HashMultiset.create();
 		for (Item item : inv.getItems())
 		{
-			if (item == null)
+			if (item == null || item.getId() == UNKNOWN_ITEM)
 			{
 				continue;
 			}

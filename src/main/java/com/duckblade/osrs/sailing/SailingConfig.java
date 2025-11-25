@@ -168,6 +168,7 @@ public interface SailingConfig extends Config
 	enum ShowChartsMode
 	{
 		NONE,
+		REQUIREMENTS_MET,
 		UNCHARTED,
 		CHARTED,
 		ALL,
@@ -213,11 +214,24 @@ public interface SailingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "chartingUnavailableColor",
+		name = "Unavailable Colour",
+		description = "Colour to highlight nearby uncharted locations you do not meet requirements for.",
+		section = SECTION_SEA_CHARTING,
+		position = 4
+	)
+	@Alpha
+	default Color chartingRequirementsUnmetColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
 		keyName = "chartingWeatherSolver",
 		name = "Weather Station Solver",
 		description = "Whether to provide a helper for weather charting.",
 		section = SECTION_SEA_CHARTING,
-		position = 4
+		position = 5
 	)
 	default boolean chartingWeatherSolver()
 	{
@@ -229,7 +243,7 @@ public interface SailingConfig extends Config
 		name = "Current Duck Solver",
 		description = "Whether to provide a helper for current duck trails.",
 		section = SECTION_SEA_CHARTING,
-		position = 4
+		position = 6
 	)
 	default boolean chartingDuckSolver()
 	{
