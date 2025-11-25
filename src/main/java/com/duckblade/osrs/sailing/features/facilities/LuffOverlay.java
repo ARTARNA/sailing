@@ -25,8 +25,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Slf4j
 @Singleton
 public class LuffOverlay
-		extends Overlay
-		implements PluginLifecycleComponent
+	extends Overlay
+	implements PluginLifecycleComponent
 {
 
 	private static final String CHAT_LUFF_AVAILABILE = "You feel a gust of wind.";
