@@ -62,7 +62,11 @@ public class LuffOverlay
 	{
 		if (!e.getWorldView().isTopLevel())
 		{
-			needLuff = false;
+			if (client.getLocalPlayer() == null ||
+				e.getWorldView().getId() == client.getLocalPlayer().getWorldView().getId())
+			{
+				needLuff = false;
+			}
 		}
 	}
 
