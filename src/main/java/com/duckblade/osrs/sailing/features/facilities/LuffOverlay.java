@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import java.util.Set;
 
 @Slf4j
 @Singleton
@@ -33,6 +36,14 @@ public class LuffOverlay
 	private static final String CHAT_LUFF_PERFORMED = "You trim the sails, catching the wind for a burst of speed!";
 	private static final String CHAT_LUFF_STORED = "You trim the sails, catching the wind and storing a wind mote in your helm.";
 	private static final String CHAT_LUFF_ENDED = "The wind dies down and your sails with it.";
+	private static final String CHAT_MOTE_PERFORMED = "You release the wind mote for a burst of speed!";
+
+	private static final Set<String> CHAT_LUFF_CLEAR_MESSAGES = new HashSet<>(Arrays.asList(
+			CHAT_LUFF_PERFORMED,
+			CHAT_LUFF_STORED,
+			CHAT_LUFF_ENDED,
+			CHAT_MOTE_PERFORMED
+	));
 
 	private final Client client;
 	private final SailingConfig config;
@@ -83,7 +94,7 @@ public class LuffOverlay
 		{
 			needLuff = true;
 		}
-		else if (CHAT_LUFF_PERFORMED.equals(msg) || CHAT_LUFF_STORED.equals(msg) || CHAT_LUFF_ENDED.equals(msg))
+		else if (CHAT_LUFF_CLEAR_MESSAGES.contains(msg))
 		{
 			needLuff = false;
 		}
