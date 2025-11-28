@@ -6,6 +6,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
+import net.runelite.client.util.ColorUtil;
 
 @ConfigGroup(SailingConfig.CONFIG_GROUP)
 public interface SailingConfig extends Config
@@ -64,19 +66,35 @@ public interface SailingConfig extends Config
 
 	@ConfigSection(
 		name = "Courier Tasks",
-		description = "Settings for courier tasks (aka port tasks)",
+		description = "Settings for courier tasks (AKA port tasks).",
 		position = 700,
 		closedByDefault = true
 	)
 	String SECTION_COURIER_TASKS = "courier";
 
 	@ConfigSection(
-		name = "Cargo Hold Tracking",
-		description = "Settings for tracking the contents of your cargo hold.",
+		name = "Salvaging",
+		description = "Settings for shipwreck salvaging.",
 		position = 800,
 		closedByDefault = true
 	)
+	String SECTION_SALVAGING = "salvaging";
+
+	@ConfigSection(
+		name = "Cargo Hold Tracking",
+		description = "Settings for tracking the contents of your cargo hold.",
+		position = 900,
+		closedByDefault = true
+	)
 	String SECTION_CARGO_HOLD_TRACKING = "cargoHoldTracking";
+
+	@ConfigSection(
+		name = "Ocean Encounters",
+		description = "Settings for the ocean encounter random events.",
+		position = 1000,
+		closedByDefault = true
+	)
+	String SECTION_OCEAN_ENCOUNTERS = "oceanEncounters";
 
 	@ConfigItem(
 		keyName = "highlightRapids",
@@ -91,6 +109,70 @@ public interface SailingConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "safeRapidsColour",
+			name = "Safe Rapids Colour",
+			description = "Colour to highlight safely navigable rapids.",
+			section = SECTION_NAVIGATION,
+			position = 2
+	)
+	@Alpha
+	default Color safeRapidsColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+			keyName = "dangerousRapidsColour",
+			name = "Dangerous Rapids Colour",
+			description = "Colour to highlight unnavigable dangerous rapids.",
+			section = SECTION_NAVIGATION,
+			position = 3
+	)
+	@Alpha
+	default Color dangerousRapidsColour()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+			keyName = "unknownRapidsColour",
+			name = "Unknown Rapids Colour",
+			description = "Colour to highlight rapids rapids unknown to be navigable or not.",
+			section = SECTION_NAVIGATION,
+			position = 4
+	)
+	@Alpha
+	default Color unknownRapidsColour()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+			keyName = "highlightLightningCloudStrikes",
+			name = "Highlight Lightning Cloud Strikes",
+			description = "Highlights the lightning clouds that are about to strike and should be avoided",
+			section = SECTION_NAVIGATION,
+			position = 5
+	)
+	default boolean highlightLightningCloudStrikes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "lightningCloudStrikeColour",
+			name = "Lightning Strike Colour",
+			description = "Colour to highlight lightning cloud strikes. Colour will appear darker when about to strike.",
+			section = SECTION_NAVIGATION,
+			position = 6
+	)
+	@Alpha
+	default Color lightningCloudStrikeColour()
+	{
+		return new Color(210, 109, 3);
+	}
+
+	@ConfigItem(
 		keyName = "highlightTrimmableSails",
 		name = "Highlight Trimmable Sails",
 		description = "Highlight sails when they require trimming.",
@@ -98,6 +180,18 @@ public interface SailingConfig extends Config
 		position = 1
 	)
 	default boolean highlightTrimmableSails()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showSpeedBoostInfoBox",
+			name = "Show Speed Boost InfoBox",
+			description = "Show an InfoBox with the duration of your active speed boost.",
+			section = SECTION_FACILITIES,
+			position = 2
+	)
+	default boolean showSpeedBoostInfoBox()
 	{
 		return true;
 	}
@@ -251,6 +345,18 @@ public interface SailingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "chartingMermaidSolver",
+		name = "Mermaid Task Solver",
+		description = "Whether to provide a helper for mermaid charting tasks.",
+		section = SECTION_SEA_CHARTING,
+		position = 7
+	)
+	default boolean chartingMermaidSolver()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "barracudaHighlightLostCrates",
 		name = "Highlight Crates",
 		description = "Highlight lost crates that need to be collected during Barracuda Trials.",
@@ -276,6 +382,42 @@ public interface SailingConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "barracudaHidePortalTransitions",
+			name = "Hide Portal Transitions",
+			description = "Hide the transition animation when taking a portal in The Gwenith Glide.",
+			section = SECTION_BARRACUDA_TRIALS,
+			position = 3
+	)
+	default boolean barracudaHidePortalTransitions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "barracudaTemporTantrumShowRumTarget",
+		name = "TT: Show Rum Target",
+		description = "Show whether you have rum/need to drop-off rum in the Tempor Tantrum course.",
+		section = SECTION_BARRACUDA_TRIALS,
+		position = 4
+	)
+	default boolean barracudaTemporTantrumShowRumTarget()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "barracudaJubblyJiveShowToadyTargets",
+			name = "JJ: Show Toady Targets",
+			description = "Show which outcrops need toadies thrown at them in the Jubbly Jive course.",
+			section = SECTION_BARRACUDA_TRIALS,
+			position = 5
+	)
+	default boolean barracudaJubblyJiveShowToadyTargets()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "courierItemIdentification",
 		name = "Destination on Items",
 		description = "Show the destination port on cargo crates in your inventory and cargo hold.",
@@ -283,6 +425,93 @@ public interface SailingConfig extends Config
 		position = 1
 	)
 	default boolean courierItemIdentification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHighlightActiveWrecks",
+		name = "Highlight Active Locations",
+		description = "Whether to highlight active shipwrecks.",
+		section = SECTION_SALVAGING,
+		position = 1
+	)
+	default boolean salvagingHighlightActiveWrecks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHighlightActiveWrecksColour",
+		name = "Active Colour",
+		description = "Colour to highlight active shipwrecks.",
+		section = SECTION_SALVAGING,
+		position = 2
+	)
+	@Alpha
+	default Color salvagingHighlightActiveWrecksColour()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHighlightInactiveWrecks",
+		name = "Highlight Inactive Locations",
+		description = "Whether to highlight inactive shipwrecks.",
+		section = SECTION_SALVAGING,
+		position = 3
+	)
+	default boolean salvagingHighlightInactiveWrecks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHighlightInactiveWrecksColour",
+		name = "Active Colour",
+		description = "Colour to highlight active shipwrecks.",
+		section = SECTION_SALVAGING,
+		position = 4
+	)
+	@Alpha
+	default Color salvagingHighlightInactiveWrecksColour()
+	{
+		return Color.DARK_GRAY;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHideHighLevelWrecks",
+		name = "High-Level Wrecks",
+		description = "Hide wrecks for which you do not have the required level to salvage.",
+		section = SECTION_SALVAGING,
+		position = 5
+	)
+	default boolean salvagingHighlightHighLevelWrecks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "salvagingHideHighLevelWrecksColour",
+		name = "High-Level Colour",
+		description = "Colour to highlight wrecks for which you do not have the required level to salvage.",
+		section = SECTION_SALVAGING,
+		position = 6
+	)
+	@Alpha
+	default Color salvagingHighLevelWrecksColour()
+	{
+		return ColorUtil.colorWithAlpha(Color.RED, 64);
+	}
+
+	@ConfigItem(
+		keyName = "cargoHoldDummy",
+		name = "Under Development",
+		description = "This feature is still under development and will be released soon.",
+		section = SECTION_CARGO_HOLD_TRACKING,
+		position = -999
+	)
+	default boolean cargoHoldDummy()
 	{
 		return true;
 	}
@@ -300,4 +529,87 @@ public interface SailingConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "notifyGiantClamSpawn",
+		name = "Notify on Giant clam",
+		description = "Notify when a giant clam spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 1
+	)
+	default Notification notifyGiantClamSpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyClueTurtleSpawn",
+		name = "Notify on Clue turtle",
+		description = "Notify when a clue turtle spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 2
+	)
+	default Notification notifyClueTurtleSpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyCastawaySpawn",
+		name = "Notify on Castaway",
+		description = "Notify when a castaway spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 3
+	)
+	default Notification notifyCastawaySpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyClueCasketSpawn",
+		name = "Notify on Clue casket",
+		description = "Notify when a clue casket spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 4
+	)
+	default Notification notifyClueCasketSpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyLostShipmentSpawn",
+		name = "Notify on Lost shipment",
+		description = "Notify when a lost shipment spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 5
+	)
+	default Notification notifyLostShipmentSpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyMysteriousGlowSpawn",
+		name = "Notify on Mysterious glow",
+		description = "Notify when a mysterious glow spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 6
+	)
+	default Notification notifyMysteriousGlowSpawn()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "notifyOceanManSpawn",
+		name = "Notify on Ocean man",
+		description = "Notify when an ocean man spawns.",
+		section = SECTION_OCEAN_ENCOUNTERS,
+		position = 7
+	)
+	default Notification notifyOceanManSpawn()
+	{
+		return Notification.OFF;
+	}
 }
