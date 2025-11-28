@@ -1,11 +1,15 @@
 package com.duckblade.osrs.sailing.module;
 
 import com.duckblade.osrs.sailing.SailingConfig;
+import com.duckblade.osrs.sailing.features.barracudatrials.HidePortalTransitions;
+import com.duckblade.osrs.sailing.features.barracudatrials.JubblyJiveHelper;
 import com.duckblade.osrs.sailing.features.facilities.CargoHoldTracker;
 import com.duckblade.osrs.sailing.features.facilities.LuffOverlay;
 import com.duckblade.osrs.sailing.features.facilities.SpeedBoostInfoBox;
+import com.duckblade.osrs.sailing.features.navigation.LightningCloudsOverlay;
 import com.duckblade.osrs.sailing.features.navigation.RapidsOverlay;
-import com.duckblade.osrs.sailing.features.barracudatrials.BarracudaTrialHelper;
+import com.duckblade.osrs.sailing.features.barracudatrials.LostCargoHighlighter;
+import com.duckblade.osrs.sailing.features.barracudatrials.TemporTantrumHelper;
 import com.duckblade.osrs.sailing.features.charting.CurrentDuckTaskTracker;
 import com.duckblade.osrs.sailing.features.charting.SeaChartOverlay;
 import com.duckblade.osrs.sailing.features.charting.SeaChartPanelOverlay;
@@ -23,6 +27,7 @@ import com.duckblade.osrs.sailing.features.oceanencounters.GiantClam;
 import com.duckblade.osrs.sailing.features.oceanencounters.LostShipment;
 import com.duckblade.osrs.sailing.features.oceanencounters.MysteriousGlow;
 import com.duckblade.osrs.sailing.features.oceanencounters.OceanMan;
+import com.duckblade.osrs.sailing.features.salvaging.SalvagingHighlight;
 import com.duckblade.osrs.sailing.features.util.BoatTracker;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.AbstractModule;
@@ -47,7 +52,6 @@ public class SailingModule extends AbstractModule
 	Set<PluginLifecycleComponent> lifecycleComponents(
 		@Named("developerMode") boolean developerMode,
 
-		BarracudaTrialHelper barracudaTrialHelper,
 		BoatTracker boatTracker,
 		CargoHoldTracker cargoHoldTracker,
 		Castaway castaway,
@@ -58,6 +62,11 @@ public class SailingModule extends AbstractModule
 		CurrentDuckTaskTracker currentDuckTaskTracker,
 		DeprioSailsOffHelm deprioSailsOffHelm,
 		GiantClam giantClam,
+		HidePortalTransitions hidePortalTransitions,
+		JubblyJiveHelper jubblyJiveHelper,
+		TemporTantrumHelper temporTantrumHelper,
+		LightningCloudsOverlay lightningCloudsOverlay,
+		LostCargoHighlighter lostCargoHighlighter,
 		LostShipment lostShipment,
 		LuffOverlay luffOverlay,
 		MermaidTaskSolver mermaidTaskSolver,
@@ -65,6 +74,7 @@ public class SailingModule extends AbstractModule
 		OceanMan oceanMan,
 		PrioritizeCargoHold prioritizeCargoHold,
 		RapidsOverlay rapidsOverlay,
+		SalvagingHighlight salvagingHighlight,
 		SeaChartOverlay seaChartOverlay,
 		SeaChartPanelOverlay seaChartPanelOverlay,
 		SeaChartTaskIndex seaChartTaskIndex,
@@ -73,7 +83,6 @@ public class SailingModule extends AbstractModule
 	)
 	{
 		var builder = ImmutableSet.<PluginLifecycleComponent>builder()
-			.add(barracudaTrialHelper)
 			.add(boatTracker)
 			.add(castaway)
 			.add(clueCasket)
@@ -83,6 +92,11 @@ public class SailingModule extends AbstractModule
 			.add(currentDuckTaskTracker)
 			.add(deprioSailsOffHelm)
 			.add(giantClam)
+			.add(hidePortalTransitions)
+			.add(jubblyJiveHelper)
+			.add(temporTantrumHelper)
+			.add(lightningCloudsOverlay)
+			.add(lostCargoHighlighter)
 			.add(lostShipment)
 			.add(luffOverlay)
 			.add(mermaidTaskSolver)
@@ -90,6 +104,7 @@ public class SailingModule extends AbstractModule
 			.add(oceanMan)
 			.add(prioritizeCargoHold)
 			.add(rapidsOverlay)
+			.add(salvagingHighlight)
 			.add(seaChartOverlay)
 			.add(seaChartPanelOverlay)
 			.add(seaChartTaskIndex)

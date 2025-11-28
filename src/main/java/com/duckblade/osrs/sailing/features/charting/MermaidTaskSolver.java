@@ -195,7 +195,7 @@ public class MermaidTaskSolver
 		.put(
 			SeaChartTask.TASK_171,
 			ImmutableMap.<String, Integer>builder()
-				.put("Gold ore", 2)
+				.put("Gold ore", 1)
 				.build()
 		)
 		.put(
