@@ -72,13 +72,10 @@ public class LuffOverlay
 	@Subscribe
 	public void onWorldViewUnloaded(WorldViewUnloaded e)
 	{
-		if (!e.getWorldView().isTopLevel())
+		if (!e.getWorldView().isTopLevel() &&
+			e.getWorldView() == client.getLocalPlayer().getWorldView())
 		{
-			if (client.getLocalPlayer() == null ||
-				e.getWorldView().getId() == client.getLocalPlayer().getWorldView().getId())
-			{
-				needLuff = false;
-			}
+			needLuff = false;
 		}
 	}
 
